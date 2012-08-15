@@ -169,6 +169,44 @@ Then if a step was defined in a feature or substep as &#8220;When I login&#8221;
 </tbody>
 </table>
 <p>Example Pom fragment</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;executionConfig&gt;</span>
+
+  <span class="nt">&lt;description&gt;</span>Self Test Features<span class="nt">&lt;/description&gt;</span>
+
+  <span class="nt">&lt;featureFile&gt;</span>${basedir}/target/test-classes/features<span class="nt">&lt;/featureFile&gt;</span>
+
+  <span class="nt">&lt;subStepsFileName&gt;</span>${basedir}/target/test-classes/substeps<span class="nt">&lt;/subStepsFileName&gt;</span>
+
+  <span class="nt">&lt;stepImplementationClassNames&gt;</span>
+      <span class="nt">&lt;param&gt;</span>com.technophobia.webdriver.substeps.impl.BaseWebdriverSubStepImplementations<span class="nt">&lt;/param&gt;</span>
+      <span class="nt">&lt;param&gt;</span>com.technophobia.webdriver.substeps.example.ExampleCustomWebdriverStepImplementations<span class="nt">&lt;/param&gt;</span>
+  <span class="nt">&lt;/stepImplementationClassNames&gt;</span>
+
+  <span class="c">&lt;!-- optional attributes --&gt;</span>
+
+  <span class="nt">&lt;initialisationClass&gt;</span>
+      <span class="nt">&lt;param&gt;</span>com.technophobia.webdriver.substeps.runner.DefaultExecutionSetupTearDown<span class="nt">&lt;/param&gt;</span>
+      <span class="nt">&lt;param&gt;</span>com.technophobia.webdriver.substeps.example.ExampleSetupAndTearDown<span class="nt">&lt;/param&gt;</span>
+  <span class="nt">&lt;/initialisationClass&gt;</span>
+
+  <span class="nt">&lt;tags&gt;</span>@all<span class="nt">&lt;/tags&gt;</span>
+
+  <span class="nt">&lt;nonFatalTags&gt;</span>@new_phase<span class="nt">&lt;/nonFatalTags&gt;</span>
+
+  <span class="nt">&lt;fastFailParseErrors&gt;</span>false<span class="nt">&lt;/fastFailParseErrors&gt;</span>
+
+  <span class="nt">&lt;strict&gt;</span>false<span class="nt">&lt;/strict&gt;</span>
+
+  <span class="nt">&lt;nonStrictKeywordPrecedence&gt;</span>
+      <span class="nt">&lt;param&gt;</span>Given<span class="nt">&lt;/param&gt;</span>
+      <span class="nt">&lt;param&gt;</span>When<span class="nt">&lt;/param&gt;</span>
+      <span class="nt">&lt;param&gt;</span>Then<span class="nt">&lt;/param&gt;</span>
+      <span class="nt">&lt;param&gt;</span>And<span class="nt">&lt;/param&gt;</span>
+  <span class="nt">&lt;/nonStrictKeywordPrecedence&gt;</span>
+
+<span class="nt">&lt;/executionConfig&gt;</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="reporting">
 <h2>Reporting<a class="headerlink" href="#reporting" title="Permalink to this headline">¶</a></h2>
@@ -178,6 +216,15 @@ Then if a step was defined in a feature or substep as &#8220;When I login&#8221;
 <li>alter the outputDirectory to write the html report elsewhere.</li>
 <li>Typically we use a &#8216;post-build&#8217; task to move the HTML report elsewhere and create a permanent link. (In Jenkins this can be achieved with the HTMLPublisher plugin).</li>
 </ul>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;configuration&gt;</span>
+   ...
+   <span class="nt">&lt;executionReportBuilder</span> <span class="na">implementation=</span><span class="s">&quot;com.technophobia.substeps.report.DefaultExecutionReportBuilder&quot;</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;outputDirectory&gt;</span>${project.build.directory}<span class="nt">&lt;/outputDirectory&gt;</span>
+   <span class="nt">&lt;/executionReportBuilder&gt;</span>
+
+<span class="nt">&lt;/configuration&gt;</span>
+</pre></div>
+</div>
 <ul class="simple">
 <li>Alternative report builders can be used provided that they implement <tt class="docutils literal"><span class="pre">com.technophobia.substeps.report.ExecutionReportBuilder</span></tt></li>
 </ul>
