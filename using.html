@@ -28,6 +28,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
     <link rel="top" title="Substeps  documentation" href="index.html" />
+    <link rel="next" title="Substeps Runner - Release Notes" href="release_notes.html" />
     <link rel="prev" title="Welcome to Substeps Runner!" href="index.html" /> 
   </head>
   <body>
@@ -41,6 +42,8 @@
         «&#160;&#160;<a href="index.html">Welcome to Substeps Runner!</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="release_notes.html">Substeps Runner - Release Notes</a>&#160;&#160;»
         </p>
 
       </div>
@@ -133,19 +136,19 @@ eg &lt;param&gt;com.technophobia.substeps.StepImplmentations&lt;param&gt;</td>
 <td>&nbsp;</td>
 </tr>
 <tr class="row-even"><td>initialisationClass</td>
-<td>Ordered list of classes containing setup and tear down methods
-eg &lt;param&gt;com.technophobia.substeps.MySetup&lt;param&gt;</td>
+<td>&lt;<strong>optional</strong>&gt; Ordered list of classes containing setup and tear down methods
+eg &lt;param&gt;com.technophobia.substeps.MySetup&lt;param&gt;.   By default the initialisation classes associated with the step implementations will be used.</td>
 <td>&nbsp;</td>
 </tr>
 <tr class="row-odd"><td>tags</td>
-<td>&lt;<strong>optional</strong>&gt; If the feature or scenario has this tag, then it will be
-included, otherwise it won&#8217;t</td>
+<td>&lt;<strong>optional</strong>&gt; If the feature or scenario has these tags, then it will be
+included, otherwise it won&#8217;t. multiple tags are space seperated.  Tags can be excluded by prefixing with &#8211;</td>
 <td>&nbsp;</td>
 </tr>
 <tr class="row-even"><td>nonFatalTags</td>
 <td>&lt;<strong>optional</strong>&gt; If a scenario (and therefore a feature) that has this tag fails to pass, then the build will not fail.  This is useful for scenarios
 where tests are written and are included in a CI build in advance of completed functionality, this allows the build and therefore maven releases to succeed.  Over the course of
-a project this list should be reduced as confidence in the delivery grows.</td>
+a project this list should be reduced as confidence in the delivery grows.  Format is the same for &lt;tags&gt;</td>
 <td>&nbsp;</td>
 </tr>
 <tr class="row-odd"><td>fastFailParseErrors</td>
@@ -193,6 +196,8 @@ Then if a step was defined in a feature or substep as &#8220;When I login&#8221;
         «&#160;&#160;<a href="index.html">Welcome to Substeps Runner!</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="release_notes.html">Substeps Runner - Release Notes</a>&#160;&#160;»
         </p>
 
       </div>
