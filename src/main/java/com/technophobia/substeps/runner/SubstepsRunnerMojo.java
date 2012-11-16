@@ -131,8 +131,7 @@ public class SubstepsRunnerMojo extends AbstractMojo {
     	
 		final CountDownLatch processStarted = new CountDownLatch(1);
 		
-		try
-		{
+		try {
     		// strings
 			final List testClassPathElements = project.getTestClasspathElements();
 			final StringBuilder cpBuf = new StringBuilder();
@@ -163,8 +162,7 @@ public class SubstepsRunnerMojo extends AbstractMojo {
 	 
 		    processBuilder.redirectErrorStream(true);
 		    
-			try
-			{
+			try {
 				forkedJVMProcess = processBuilder.start();
 				
 				final InputStream stderr = forkedJVMProcess.getInputStream();
@@ -173,51 +171,35 @@ public class SubstepsRunnerMojo extends AbstractMojo {
 				
 				final Thread t = new Thread(new Runnable(){
 
-					public void run()
-					{
+					public void run(){
 						String line = null;
 
-						try
-						{
-							while ((line = br.readLine()) != null)
-							{
+						try {
+							while ((line = br.readLine()) != null) {
 								if (line.compareToIgnoreCase("awaiting the shutdown notification...")==0){
 									System.out.println("mbean server process started");
 									processStarted.countDown();
-
 								}
-								
-								System.out.println(line);	
+								System.out.println(" *\t\t" + line);	
 							}
 						}
-						catch (final IOException e)
-						{
+						catch (final IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}});
-					
 				t.start();
-
 			}
-			catch (final IOException e)
-			{
+			catch (final IOException e){
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-		    
-			
-			
 		}
-		catch (final DependencyResolutionRequiredException e)
-		{
+		catch (final DependencyResolutionRequiredException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		try
-		{
+		try {
 			System.out.println("waiting for process to start...");
 			processStarted.await();
 			System.out.println("process started");
