@@ -11,7 +11,7 @@ import collection.JavaConversions._
 /**
  * @author rbarefield
  */
-class SubstepsRunner(val substepFiles: java.util.Set[Reader], val featureFiles: java.util.List[Reader], val codedStepBasePackages: java.util.Set[String]) {
+class SubstepsRunner(val substepFiles: Set[Reader], val featureFiles: List[Reader], val codedStepBasePackages: Set[String]) {
 
   var featureFileParses : Seq[Feature] = Seq()
 
@@ -27,7 +27,10 @@ class SubstepsRunner(val substepFiles: java.util.Set[Reader], val featureFiles: 
 
       substepRepository.add(codedSubstep)
     }
-    featureFileParses = featureFiles.map(new FeatureFileParser(substepRepository).parseOrFail(_))
+    val featureFilePossibleParses = featureFiles.map(new FeatureFileParser(substepRepository).parse(_))
+    val failure = featureFilePossibleParses.find(_.isInstanceOf[FeatureFileParser#Failure])
+    if (failure.isDefined) throw new SubstepsRunnerException("Parse of feature file failed: " + failure.get.toString)
+    featureFileParses = featureFilePossibleParses.map(_.get)
   }
 
   def run()  = {

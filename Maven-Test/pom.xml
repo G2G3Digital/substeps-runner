@@ -31,6 +31,16 @@
         </executions>
 
         <configuration>
+          <executionConfigs>
+            <executionConfig>
+              <description>My Substeps Execution</description>
+              <stepImplementationPackages>
+                <stepImplementationPackage>com.technophobia.substeps.runner.teststeps</stepImplementationPackage>
+              </stepImplementationPackages>
+              <featureFile>${basedir}/src/test/features</featureFile>
+              <subStepsFileName>${basedir}/src/test/substeps</subStepsFileName>
+            </executionConfig>
+          </executionConfigs>
         </configuration>
 
       </plugin>
