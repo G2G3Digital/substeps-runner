@@ -16,6 +16,6 @@ object CodedSubstepLoader {
         method: Method <- ReflectionUtils.getAllMethods(stepImplClass, ReflectionUtils.withAnnotation(classOf[Step]));
         stepAnnotation = method.getAnnotation(classOf[Step])
     }
-    yield CodedSubstep(stepAnnotation.value().r, method, stepImplClass)
+    yield CodedSubstep(stepAnnotation.value().r, method, stepImplClass.newInstance().asInstanceOf[AnyRef])
   }
 }

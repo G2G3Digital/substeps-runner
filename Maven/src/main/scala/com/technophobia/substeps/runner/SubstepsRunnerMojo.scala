@@ -44,11 +44,9 @@ import com.technophobia.substeps.model.execution.RunResult
  * Mojo to run a number SubStep features, each contained within any number of
  * executionConfigs, encapsulating the required config and setup and tear down
  * details
- *
- * @configurator include-project-dependencies
  */
 @SuppressWarnings(Array("unchecked"))
-@Mojo(name = "run-features", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.INTEGRATION_TEST) class SubstepsRunnerMojo extends AbstractMojo {
+@Mojo(name = "run-features", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.INTEGRATION_TEST, configurator = "include-project-dependencies") class SubstepsRunnerMojo extends AbstractMojo {
 
 
   //User parameters

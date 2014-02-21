@@ -15,12 +15,14 @@ import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.codehaus.classworlds.ClassRealm;
 import org.codehaus.plexus.component.configurator.AbstractComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
+import org.codehaus.plexus.component.configurator.ComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ConfigurationListener;
 import org.codehaus.plexus.component.configurator.converters.composite.ObjectWithFieldsConverter;
 import org.codehaus.plexus.component.configurator.converters.special.ClassRealmConverter;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluationException;
 import org.codehaus.plexus.component.configurator.expression.ExpressionEvaluator;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.component.annotations.Component;
 
 /**
  * A custom ComponentConfigurator which adds the project's runtime classpath
@@ -36,6 +38,7 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
  *                     "org.codehaus.plexus.component.configurator.converters.lookup.ConverterLookup"
  *                     role-hint="default"
  */
+@Component(role = ComponentConfigurator.class, hint = "include-project-dependencies")
 public class IncludeProjectDependenciesComponentConfigurator extends
         AbstractComponentConfigurator {
 
