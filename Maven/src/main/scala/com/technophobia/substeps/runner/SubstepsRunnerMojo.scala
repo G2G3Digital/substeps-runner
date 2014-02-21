@@ -39,6 +39,7 @@ import javax.validation.{Configuration, Valid, Validation}
 import javax.validation.constraints.{Size, Pattern, NotNull}
 import com.technophobia.substeps.runner.validators.ValidatorFactory
 import com.technophobia.substeps.model.execution.RunResult
+import com.technophobia.substeps.{SubstepsLogger, SubstepsLoggers}
 
 /**
  * Mojo to run a number SubStep features, each contained within any number of
@@ -69,7 +70,6 @@ import com.technophobia.substeps.model.execution.RunResult
 
   def execute {
 
-
     def handle(runResult: RunResult) {
 
       runResult match {
@@ -83,6 +83,8 @@ import com.technophobia.substeps.model.execution.RunResult
 
     validateConfiguration()
 
+    addLogger()
+
       for (executionConfig <- executionConfigs) {
 
         val substepFiles = loadFileOrFilesWithPattern(executionConfig.subStepsFileName, """^.*\.substeps$""").toSet
@@ -94,7 +96,19 @@ import com.technophobia.substeps.model.execution.RunResult
       }
   }
 
+  def addLogger() {
 
+    SubstepsLoggers.addLogger(new SubstepsLogger {
+
+      def error(message: String, cause: Throwable): Unit = getLog.error(message, cause)
+
+      def error(message: String): Unit = getLog.error(message)
+
+      def debug(message: String): Unit = getLog.debug(message)
+
+      def info(message: String): Unit = getLog.info(message)
+    })
+  }
 
   private def validateConfiguration() {
 

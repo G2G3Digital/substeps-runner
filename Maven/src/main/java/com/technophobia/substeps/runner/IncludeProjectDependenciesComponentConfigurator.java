@@ -30,7 +30,9 @@ import org.codehaus.plexus.component.annotations.Component;
  * 
  * @author Brian Jackson
  * @since Aug 1, 2008 3:04:17 PM
- * 
+ *
+ * modified by RBarefield to use Java5 annotations
+ *
  * @plexus.component 
  *                   role="org.codehaus.plexus.component.configurator.ComponentConfigurator"
  *                   role-hint="include-project-dependencies"
