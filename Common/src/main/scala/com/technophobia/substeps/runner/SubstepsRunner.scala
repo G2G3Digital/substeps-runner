@@ -1,42 +1,39 @@
 package com.technophobia.substeps.runner
 
-import com.technophobia.substeps.{FeatureFileParser, SubstepsFileParser}
-import java.io.Reader
-import com.technophobia.substeps.repositories.SubstepRepository
-import com.technophobia.substeps.model.Feature
-import com.technophobia.substeps.model.execution.RunResult
+import java.io.File
 
+import com.technophobia.substeps.parsing.ParseFailureException
+import com.technophobia.substeps.services.SubstepsSession
 import collection.JavaConversions._
 
 /**
  * @author rbarefield
  */
-class SubstepsRunner(val substepFiles: Set[Reader], val featureFiles: List[Reader], val codedStepBasePackages: Set[String]) {
+class SubstepsRunner(val substepFiles: Set[File], val featureFiles: List[File], val codedStepBasePackages: Set[String]) {
 
-  var featureFileParses : Seq[Feature] = Seq()
-
-  val substepRepository = new SubstepRepository
+  val session = new SubstepsSession
 
   def prepareForExecution() {
 
-    for(substepFile <- substepFiles; substep <- new SubstepsFileParser().parseOrFail(substepFile)) {
+    val substepClasses = CodedSubstepClassFinder.find(codedStepBasePackages)
 
-      substepRepository.add(substep)
-    }
-    for(codedSubstep <- CodedSubstepLoader.loadStepImplementations(codedStepBasePackages.toSet)) {
+    substepClasses.foreach(a => session.addCodedSubsteps(a.newInstance))
 
-      substepRepository.add(codedSubstep)
+    substepFiles.foreach(session.addSubsteps)
+
+    for(featureFile <- featureFiles) {
+
+      try {
+        session.addFeature(featureFile)
+      } catch {
+
+        case exception : ParseFailureException => throw new SubstepsRunnerException("Parse of feature file failed: " + exception.getMessage)
+      }
     }
-    val featureFilePossibleParses = featureFiles.map(new FeatureFileParser(substepRepository).parse(_))
-    val failure = featureFilePossibleParses.find(_.isInstanceOf[FeatureFileParser#Failure])
-    if (failure.isDefined) throw new SubstepsRunnerException("Parse of feature file failed: " + failure.get.toString)
-    featureFileParses = featureFilePossibleParses.map(_.get)
+
   }
 
-  def run()  = {
-
-     featureFileParses.foldLeft[RunResult](RunResult.NoneRun)((b, a) => b.combine(a.run()))
-  }
+  def run()  = session.run(List())
 
 
 }

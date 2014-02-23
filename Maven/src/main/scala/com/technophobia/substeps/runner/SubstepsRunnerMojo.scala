@@ -18,7 +18,7 @@
  */
 package com.technophobia.substeps.runner
 
-import java.io.{ByteArrayInputStream, File, FileReader, Reader}
+import java.io.File
 import com.google.common.io.PatternFilenameFilter
 import org.apache.maven.artifact.Artifact
 import org.apache.maven.artifact.factory.ArtifactFactory
@@ -35,11 +35,10 @@ import org.apache.maven.project.MavenProjectBuilder
 
 import scala.collection.JavaConversions._
 import org.apache.maven.artifact.repository.ArtifactRepository
-import javax.validation.{Configuration, Valid, Validation}
-import javax.validation.constraints.{Size, Pattern, NotNull}
+import javax.validation.Valid
+import javax.validation.constraints.{Size, NotNull}
 import com.technophobia.substeps.runner.validators.ValidatorFactory
-import com.technophobia.substeps.model.execution.RunResult
-import com.technophobia.substeps.{SubstepsLogger, SubstepsLoggers}
+import com.technophobia.substeps.domain.execution.RunResult
 
 /**
  * Mojo to run a number SubStep features, each contained within any number of
@@ -54,8 +53,12 @@ import com.technophobia.substeps.{SubstepsLogger, SubstepsLoggers}
   /**
    * See <a href="./executionConfig.html">ExecutionConfig</a>
    */
-  @Parameter @NotNull @Size(min = 1) @Valid private var executionConfigs: java.util.List[ExecutionConfig] = null
-  @Parameter @Valid private var stepImplementationArtifacts: java.util.List[String] = _
+  @Parameter
+  @NotNull
+  @Size(min = 1)
+  @Valid private var executionConfigs: java.util.List[ExecutionConfig] = null
+  @Parameter
+  @Valid private var stepImplementationArtifacts: java.util.List[String] = _
 
   //Injected parameters
   @Parameter(required = true, readonly = true, defaultValue = "${project}") private var project: MavenProject = _
@@ -74,61 +77,43 @@ import com.technophobia.substeps.{SubstepsLogger, SubstepsLoggers}
 
       runResult match {
 
-        case RunResult.Failed(x) => throw new MojoFailureException("Failing substeps\n" +  x.mkString("\n"))
+        case RunResult.Failed(x) => throw new MojoFailureException("Failing substeps\n" + x.mkString("\n"))
         case RunResult.NoneRun => getLog.warn("No substeps were run")
         case RunResult.Passed => getLog.info("Substeps succeeded")
       }
     }
 
-
     validateConfiguration()
 
-    addLogger()
+    for (executionConfig <- executionConfigs) {
 
-      for (executionConfig <- executionConfigs) {
-
-        val substepFiles = loadFileOrFilesWithPattern(executionConfig.subStepsFileName, """^.*\.substeps$""").toSet
-        val featureFiles = loadFileOrFilesWithPattern(executionConfig.featureFile, """^.*\.feature$""")
-        val codedStepPackages = executionConfig.stepImplementationPackages
-        val runner: SubstepsRunner = new SubstepsRunner(substepFiles, featureFiles.toList, codedStepPackages.toSet)
-        runner.prepareForExecution()
-        handle(runner.run())
-      }
-  }
-
-  def addLogger() {
-
-    SubstepsLoggers.addLogger(new SubstepsLogger {
-
-      def error(message: String, cause: Throwable): Unit = getLog.error(message, cause)
-
-      def error(message: String): Unit = getLog.error(message)
-
-      def debug(message: String): Unit = getLog.debug(message)
-
-      def info(message: String): Unit = getLog.info(message)
-    })
+      val substepFiles = loadFileOrFilesWithPattern(executionConfig.subStepsFileName, """^.*\.substeps$""").toSet
+      val featureFiles = loadFileOrFilesWithPattern(executionConfig.featureFile, """^.*\.feature$""")
+      val codedStepPackages = executionConfig.stepImplementationPackages
+      val runner: SubstepsRunner = new SubstepsRunner(substepFiles, featureFiles.toList, codedStepPackages.toSet)
+      runner.prepareForExecution()
+      handle(runner.run())
+    }
   }
 
   private def validateConfiguration() {
 
 
     val errors = ValidatorFactory.createValidator.validate(this)
-    if(!errors.isEmpty) throw new MojoExecutionException(errors.map(constraint => s"${constraint.getPropertyPath} ${constraint.getMessage}").mkString("\n"))
+    if (!errors.isEmpty) throw new MojoExecutionException(errors.map(constraint => s"${constraint.getPropertyPath} ${constraint.getMessage}").mkString("\n"))
 
   }
 
-  private def loadFileOrFilesWithPattern(subStepsDirectoryOrFileName: String, pattern: String): Iterable[Reader] = {
+  private def loadFileOrFilesWithPattern(subStepsDirectoryOrFileName: String, pattern: String): Iterable[File] = {
 
     val fileOrDirectory: File = new File(subStepsDirectoryOrFileName)
 
-    val files: Iterable[File] = fileOrDirectory match {
+    fileOrDirectory match {
 
       case f if f.isDirectory => f.listFiles(new PatternFilenameFilter(pattern))
       case f if f.isFile => Set(f)
       case _ => throw new MojoExecutionException(s"${fileOrDirectory} is not a file or directory")
     }
-    return files.map(new FileReader(_))
   }
 
 }

@@ -1,6 +1,7 @@
 package com.technophobia.substeps.implementations
 
-import com.technophobia.substeps.model.SubSteps.{StepImplementations, Step}
+import com.technophobia.substeps.model.SubSteps
+import SubSteps.{StepImplementations, Step}
 
 @StepImplementations
 class MoreDummySteps {

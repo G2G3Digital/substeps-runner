@@ -1,6 +1,7 @@
 package com.technophobia.substeps.runner.teststeps
 
-import com.technophobia.substeps.model.SubSteps.{Step, StepImplementations}
+import com.technophobia.substeps.model.SubSteps
+import SubSteps.{Step, StepImplementations}
 
 /**
  * @author rbarefield
