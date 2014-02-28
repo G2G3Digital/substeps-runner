@@ -90,7 +90,8 @@ import com.technophobia.substeps.domain.execution.RunResult
       val substepFiles = loadFileOrFilesWithPattern(executionConfig.subStepsFileName, """^.*\.substeps$""").toSet
       val featureFiles = loadFileOrFilesWithPattern(executionConfig.featureFile, """^.*\.feature$""")
       val codedStepPackages = executionConfig.stepImplementationPackages
-      val runner: SubstepsRunner = new SubstepsRunner(substepFiles, featureFiles.toList, codedStepPackages.toSet)
+      val logger = new MavenSubstepsLogger(getLog, featureFiles.size)
+      val runner: SubstepsRunner = new SubstepsRunner(substepFiles, featureFiles.toList, codedStepPackages.toSet, Set(logger))
       runner.prepareForExecution()
       handle(runner.run())
     }
