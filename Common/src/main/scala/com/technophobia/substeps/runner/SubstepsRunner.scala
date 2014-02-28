@@ -18,7 +18,7 @@ class SubstepsRunner(val substepFiles: Set[File], val featureFiles: List[File], 
 
     val substepClasses = CodedSubstepClassFinder.find(codedStepBasePackages)
 
-    substepClasses.foreach(a => session.addCodedSubsteps(a.newInstance))
+    substepClasses.foreach(a => session.addCodedSubsteps(a))
 
     substepFiles.foreach(session.addSubsteps)
 
