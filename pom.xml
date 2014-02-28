@@ -18,7 +18,7 @@
       <module>Maven</module>
       <module>Maven-Test</module>
       <!--module>Ant</module-->
-      <!--module>Junit</module-->
+      <!--<module>Junit</module>-->
     </modules>
 
     <properties>

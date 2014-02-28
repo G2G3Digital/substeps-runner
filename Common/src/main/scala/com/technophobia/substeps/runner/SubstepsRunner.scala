@@ -38,3 +38,8 @@ class SubstepsRunner(val substepFiles: Set[File], val featureFiles: List[File], 
 
 
 }
+object SubstepsRunner {
+
+  def apply(substepsFiles: java.util.Set[File], featureFiles: java.util.List[File], codedStepBasePackages: Set[String], subscribers: java.util.Set[DomainEventSubscriber]) : SubstepsRunner =
+    new SubstepsRunner(substepsFiles.toSet, featureFiles.toList, codedStepBasePackages, subscribers.toSet)
+}

@@ -23,9 +23,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Sets;
 import org.junit.Assert;
 import org.junit.runner.Description;
 import org.junit.runner.notification.RunNotifier;
@@ -35,9 +37,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 import com.technophobia.substeps.execution.node.IExecutionNode;
 
-public class JunitFeatureRunner extends org.junit.runner.Runner {
-
-    private final Logger log = LoggerFactory.getLogger(JunitFeatureRunner.class);
+public class JunitFeatureRunner {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
@@ -55,42 +55,16 @@ public class JunitFeatureRunner extends org.junit.runner.Runner {
 
         String[] nonStrictKeywordPrecedence() default {};
 
-        Class<? extends DescriptionProvider> descriptionProvider() default EclipseDescriptionProvider.class;
-
-        Class<?>[] beforeAndAfterImplementations() default {};
     }
 
-    private final SubstepsRunner runner = ExecutionNodeRunnerFactory.createRunner();
-
-    private SubstepsExecutionConfig executionConfig = null;
-
-    private DescriptionProvider descriptionProvider = null;
-
-    private Class<?> classContainingTheTests;
-
-    private Description thisDescription;
-
-    private IJunitNotifier notifier;
-
-    private IExecutionNode rootNode;
-
-    // Used by tests only
-    public JunitFeatureRunner() {
-        // notifier = new JunitNotifier();
-    }
-
-    // Used by tests only
-    // public JunitFeatureRunner(final IJunitNotifier notifier) {
-    // this.notifier = notifier;
-    //
-    // }
 
     // Constructor required by Junit
     public JunitFeatureRunner(final Class<?> classContainingTheTests) {
+
         // where classContainingTheTests is the class annotated with
         // @RunWith....
 
-        log.debug("JunitFeatureRunner ctor with class: " + classContainingTheTests.getSimpleName());
+        SubstepsRunner runner = SubstepsRunner.apply(Collections.emptySet());
 
         final SubStepsConfiguration annotation = classContainingTheTests.getAnnotation(SubStepsConfiguration.class);
         Assert.assertNotNull("no Feature file annotation specified on the test class", annotation);
