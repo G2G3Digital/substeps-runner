@@ -16,5 +16,11 @@ class CodedSteps1 {
     Assert.assertTrue("Initialization class was not called", CodedSteps1Initialization.changed)
   }
 
+  @Step("BackgroundSubstep")
+  def codedBackgroundStep() {
+
+    Assert.assertFalse("Initialization class was called before the background", CodedSteps1Initialization.changed)
+  }
+
 
 }
