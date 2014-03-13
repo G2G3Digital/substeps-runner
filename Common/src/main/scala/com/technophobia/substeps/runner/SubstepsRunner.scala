@@ -34,7 +34,7 @@ class SubstepsRunner(val substepFiles: Set[File], val featureFiles: List[File], 
 
   }
 
-  def run()  = session.run(List())
+  def run()  = session.run()
 
 
 }
