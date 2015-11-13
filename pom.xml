@@ -171,6 +171,13 @@
             <type>test-jar</type>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>substeps-core</artifactId>
+            <version>${substeps.core.version}</version>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
