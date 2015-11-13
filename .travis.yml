@@ -5,6 +5,9 @@ sudo: false
 jdk:
   - oraclejdk7
 
+script:
+  - mvn verify
+
 notifications:
   slack:
     secure: "HtOanShuwmNukmOiPv0/Zho64i0Pvu7j6eD5+uzHOqX5MhTFFfig+fy0GsUAFJvvQgpTEEpB1z0Tt9POG0NFVi+kZ5y+QtJXK7pwGxpqHfdGKDdxCoINl2l1ityo/bi3ZA6ii1W/lFXMjeE2n5BOPYSpTjn66KxBMiTFkf2OFwU="
