@@ -1,14 +1,16 @@
-substeps-runner [![Build Status](https://travis-ci.org/G2G3Digital/substeps-runner.svg)](https://travis-ci.org/G2G3Digital/substeps-runner)
+[DEPRECATED] substeps-runner [![Build Status](https://travis-ci.org/G2G3Digital/substeps-runner.svg)](https://travis-ci.org/G2G3Digital/substeps-runner)
 ===============
 
-Runners to execute substeps, currently includes an ANT runner, a Maven plugin and a Junit runner.  
+The substeps-api repository has been merged into one with other core Substep libraries. No more pull requests on the repository will be accepted.
 
-Substeps documentation can be found [here](http://substeps.technophobia.com/ "Substeps documentation").  
+So the new home is [substeps-framework](https://github.com/G2G3Digital/substeps-framework) which now contains:
+ * substeps-api
+ * substeps-core
+ * substeps-runner
+ * substeps-glossary
 
-There is also a [Substeps Google group](http://groups.google.com/group/substeps?hl=en-GB "Substeps Google group") if you have any queries and where new releases will ne announced.
+Runners to execute substeps, currently includes an ANT runner, a Maven plugin and a Junit runner.
 
-Release Notes
-=============
 1.1.3
 -----
 * Changes to support ExecutionListener refactoring in core and api projects
